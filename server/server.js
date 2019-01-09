@@ -16,10 +16,25 @@ passport.use(
             clientSecret: keys.GOOGLE_CLIENT_SECRET,
             callbackURL: '/api/auth/google/callback'
         },
-        accessToken => {
-            console.log(accessToken);
-        }
+        (accessToken, refreshToken, profile, done) => {}
     )
+);
+
+app.get(
+    '/api/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }),
+    (req, res) => {}
+);
+
+app.get(
+    '/api/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+        return res.json({
+            success: true,
+            status: 'Logged in using google'
+        });
+    }
 );
 
 app.get('/', (req, res) => {
